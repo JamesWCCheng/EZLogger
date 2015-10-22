@@ -17,7 +17,6 @@
 #include "nsStringFwd.h"
 #include "nsString.h"
 #include "nsError.h" // For nsresult
-//#include "nsStringAPI.h" // For nsXXXString
 #include "nsDebug.h" //For printf_stderr
 /*
 nsString foo = NS_LITERAL_STRING
@@ -50,7 +49,7 @@ void printInternal(const nsAString& aAStr, const char* const aObjName)
 
 void printInternal(nsresult aRes, const char* const aObjName)
 {
-  printf_stderr("%s = %u", aObjName, static_cast<uint32_t>(aRes));
+  printf_stderr("%s = %x", aObjName, static_cast<uint32_t>(aRes));
 }
 
 #endif
