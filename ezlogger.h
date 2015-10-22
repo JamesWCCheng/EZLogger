@@ -4,16 +4,21 @@
 #include <utility>
 #include <string>
 #include <stdint.h>
-#ifndef GECKO
+
+#ifndef GECKO // GECKO
 #define printf_stderr printf
 #endif
+
 #define _(x) std::make_pair(x, #x)
 
-
-#ifdef GECKO
+#ifdef GECKO // GECKO
+//static_assert(false, "FUCK");
+#include "nsLiteralString.h"
+#include "nsStringFwd.h"
+#include "nsString.h"
 #include "nsError.h" // For nsresult
-#include "nsStringAPI.h" // For nsXXXString
-
+//#include "nsStringAPI.h" // For nsXXXString
+#include "nsDebug.h" //For printf_stderr
 /*
 nsString foo = NS_LITERAL_STRING
 nsCString bar = NS_LITERAL_CSTRING
@@ -26,7 +31,7 @@ void printInternal(const nsAutoString& aAutoStr, const char* const aObjName)
 }
 
 // For nsAutoCString
-void printInternal(const nsAutoCString& aAutoStr, const char* const aObjName)
+void printInternal(const nsAutoCString& aAutoCStr, const char* const aObjName)
 {
   printf_stderr("%s = %s", aObjName, aAutoCStr.get());
 }
@@ -52,89 +57,89 @@ void printInternal(nsresult aRes, const char* const aObjName)
 // For std string
 void printInternal(std::string aStdStr, const char* const aObjName)
 {
-	printf_stderr("%s = %s", aObjName, aStdStr.c_str());
+  printf_stderr("%s = %s", aObjName, aStdStr.c_str());
 }
 // For pointer
 void printInternal(void* aPtr, const char* const aObjName)
 {
-	printf_stderr("%s = %p", aObjName, aPtr);
+  printf_stderr("%s = %p", aObjName, aPtr);
 }
 // For c style string
 void printInternal(char* aStr, const char* const aObjName)
 {
-	printf_stderr("%s = %s", aObjName, aStr);
+  printf_stderr("%s = %s", aObjName, aStr);
 }
 // For float
 void printInternal(float aVal, const char* const aObjName)
 {
-	printf_stderr("%s = %f", aObjName, aVal);
+  printf_stderr("%s = %f", aObjName, aVal);
 }
 // For double
 void printInternal(double aVal, const char* const aObjName)
 {
-	printf_stderr("%s = %lf", aObjName, aVal);
+  printf_stderr("%s = %lf", aObjName, aVal);
 }
 
 // For bool
 void printInternal(bool aVal, const char* const aObjName)
 {
-	printf_stderr("%s = %d", aObjName, aVal);
+  printf_stderr("%s = %d", aObjName, aVal);
 }
 
 // For int32_t
 void printInternal(int32_t aVal, const char* const aObjName)
 {
-	printf_stderr("%s = %d", aObjName, aVal);
+  printf_stderr("%s = %d", aObjName, aVal);
 }
 
 // For uint32_t
 void printInternal(uint32_t aVal, const char* const aObjName)
 {
-	printf_stderr("%s = %u", aObjName, aVal);
+  printf_stderr("%s = %u", aObjName, aVal);
 }
 
 
 // For uint64_t
 void printInternal(uint64_t aVal, const char* const aObjName)
 {
-	printf_stderr("%s = %I64u", aObjName, aVal);
+  printf_stderr("%s = %lu", aObjName, aVal);
 }
 
 
 // For int64_t
 void printInternal(int64_t aVal, const char* const aObjName)
 {
-	printf_stderr("%s = %I64d", aObjName, aVal);
+  printf_stderr("%s = %ld", aObjName, aVal);
 }
 
 
 void print() {
-	printf_stderr("\n");
+  printf_stderr("\n");
 }
 
 template<class Type>
 void print(
-	const std::pair<Type, const char *> &arg) {
-	printInternal(arg.first, arg.second);
-	print();
+  const std::pair<Type, const char *> &arg) {
+  printInternal(arg.first, arg.second);
+  print();
 }
 template<class Type, class... Types>
 void print(
-	const std::pair<Type, const char *> &arg,
-	const std::pair<Types, const char *> &... args) {
-	// first is the real object, second is the object variable name.
-	printInternal(arg.first, arg.second);
-	printf_stderr(", ");
-	print(args...);
+  const std::pair<Type, const char *> &arg,
+  const std::pair<Types, const char *> &... args) {
+  // first is the real object, second is the object variable name.
+  printInternal(arg.first, arg.second);
+  printf_stderr(", ");
+  print(args...);
 }
 
 template<class... Types>
 void PInternal(const char* aFileName, const int aLineNum, Types&&...  args)
 {
-	printf_stderr("%s:%d  ", aFileName, aLineNum);
-	print(std::forward<Types>(args)...);
+  printf_stderr("%s:%d  ", aFileName, aLineNum);
+  print(std::forward<Types>(args)...);
 }
 
-#define P(...) PInternal(__FUNCTION__, __LINE__, __VA_ARGS__) 
+#define P(...) PInternal(__FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 #endif
