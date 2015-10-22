@@ -52,6 +52,19 @@
 #include "nsString.h"
 #include "nsError.h" // For nsresult
 #include "nsDebug.h" //For printf_stderr
+
+#ifdef NS_WARNING_COLOR
+  #undef NS_WARNING
+  #define NS_WARNING(str)                                       \
+    NS_DebugBreak(NS_DEBUG_WARNING, LIGHT_RED str "\033[m", nullptr, __FILE__, __LINE__)
+#endif
+
+#ifdef MOZ_LOG_886
+  #undef MOZ_LOG
+  #define REAL_LOG(X) printf_stderr(LIGHT_BLUE X "\033[m")
+  #define MOZ_LOG(_module,_level, arg) REAL_LOG arg
+#endif
+
 /*
 nsString foo = NS_LITERAL_STRING
 nsCString bar = NS_LITERAL_CSTRING
@@ -171,4 +184,5 @@ void PInternal(const char* aColor, const char* aFileName, const int aLineNum, Ty
 #define PG(...) PInternal(LIGHT_GREEN, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #define PB(...) PInternal(LIGHT_BLUE, __FUNCTION__, __LINE__, ##__VA_ARGS__)
 #define PX(COLOR, ...) PInternal(COLOR, __FUNCTION__, __LINE__, ##__VA_ARGS__)
+
 #endif

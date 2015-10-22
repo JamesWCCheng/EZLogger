@@ -18,6 +18,7 @@ PG -> LIGHT_GREEN
 
 PB -> LIGHT_BLUE  
 
+也可以傳入指定顏色
 PX(RED);  
 
 PX(LIGHT_RED);  
@@ -46,6 +47,12 @@ PX(YELLOW);
 
 PX(LIGHT_GRAY);  
 
+PR();  
+
+PG();  
+
+PB();  
+
 依序印出來的顏色是  
 
 <a href="" target="_blank"><img src="https://dl.dropboxusercontent.com/u/15611020/color.png"/></a>
@@ -55,6 +62,13 @@ main.cpp經過測試會印出
 FunctionName:LineNumber  a = 55.660000, b = haha, c = 42689.200000, d = abc, e = 1, &f = 0x7fffffffbec0, g = -123, h = -5566, i = 123, j = 1234, foo = nsString, bar = nsCString, msg = nsAutoString, msg2 = nsAutoCString, res = 0  
 
 FunctionName:LineNumber:203  
+
+##NS_WARNING_COLOR  
+
+如果#define NS_WARNING_COLOR, 行為是會把NS_WARNING變紅色  
+
+##MOZ_LOG_886  
+如果#define MOZ_LOG_886, 行為是會把PR_LOG導到printf_stderr然後套上藍色  
 
 #know issue
 我不知道怎麼盼別是不是在gecko下 所以用\#ifdef GECKO
