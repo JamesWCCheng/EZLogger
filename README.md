@@ -1,8 +1,8 @@
 # EZLogger
 
 請貼下面兩行在你的gecko code
-\#define GECKO
-\#include "ezlogger.h"
+#\#define GECKO
+#\#include "ezlogger.h"
 複製ezlogger.h到你目錄下
 使用上只需寫P(_(你的變數),...)即可全部印出不須判別型別,超無der
 
