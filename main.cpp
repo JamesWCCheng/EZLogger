@@ -14,7 +14,7 @@ int main() {
 
 #ifdef GECKO
   MOZ_LOG(0,0, ("some log\n"));
-  NS_WARNING("only string");
+  NS_WARNING("only string\n");
   nsresult res = NS_OK;
   nsString foo = NS_LITERAL_STRING("nsString");
   nsCString bar = NS_LITERAL_CSTRING("nsCString");

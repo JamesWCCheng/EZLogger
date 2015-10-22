@@ -55,13 +55,11 @@ PB();
 
 依序印出來的顏色是  
 
-<a href="" target="_blank"><img src="https://dl.dropboxusercontent.com/u/15611020/color.png"/></a>
+<a href="" target="_blank"><img src="https://dl.dropboxusercontent.com/u/15611020/color.png"/></a>  
 
 main.cpp經過測試會印出  
 
-FunctionName:LineNumber  a = 55.660000, b = haha, c = 42689.200000, d = abc, e = 1, &f = 0x7fffffffbec0, g = -123, h = -5566, i = 123, j = 1234, foo = nsString, bar = nsCString, msg = nsAutoString, msg2 = nsAutoCString, res = 0  
-
-FunctionName:LineNumber:203  
+<a href="" target="_blank"><img src="https://dl.dropboxusercontent.com/u/15611020/result.png"/></a>  
 
 ##NS_WARNING_COLOR  
 
