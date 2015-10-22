@@ -4,10 +4,11 @@
 
 \#define GECKO  
 
-\#include "ezlogger.h"
+\#include "ezlogger.h"  
+
 複製ezlogger.h到你目錄下  
 
-使用上只需寫P(_(你的變數),...)即可全部印出不須判別型別,超無腦der
+使用上只需寫P(_(你的變數),...)即可全部印出不須判別型別,超無腦der  
 
 也可以換顏色  
 
