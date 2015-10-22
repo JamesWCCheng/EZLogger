@@ -18,7 +18,8 @@ PG -> LIGHT_GREEN
 
 PB -> LIGHT_BLUE  
 
-也可以傳入指定顏色
+也可以傳入指定顏色  
+
 PX(RED);  
 
 PX(LIGHT_RED);  
