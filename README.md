@@ -45,9 +45,9 @@ PX(YELLOW);
 
 PX(LIGHT_GRAY);  
 
-依序印出來的顏色是
-<a href="" target="_blank"><img src="https://dl.dropboxusercontent.com/u/15611020/color.png"/></a>
+依序印出來的顏色是  
 
+<a href="" target="_blank"><img src="https://dl.dropboxusercontent.com/u/15611020/color.png"/></a>
 
 main.cpp經過測試會印出  
 
