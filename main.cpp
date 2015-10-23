@@ -6,7 +6,7 @@ class MOZILLA
 public:
   void GECKO()
   {
-    P(_(this));
+    P(this);
   }
 };
 
@@ -33,9 +33,9 @@ int main() {
   uint32_t i = 123;
   uint64_t j = 1234;
 #ifdef GECKO
-  P(_(a), _(b), _(c), _(d), _(e), _(&f), _(g), _(h), _(i), _(j), _(foo), _(bar), _(msg), _(msg2), _(res));
+  P(a, b, c, d, e, &f, g, h, i, j, foo, bar, msg, msg2, res);
 #else
-  P(_(a), _(b), _(c), _(d), _(e), _(&f), _(g), _(h), _(i), _(j));
+  P(a, b, c, d, e, &f, g, h, i, j);
 #endif
 
   PX(RED);
@@ -52,9 +52,9 @@ int main() {
   PX(BROWN);
   PX(YELLOW);
   PX(LIGHT_GRAY);
-  PR(); //Empty
-  PG();
-  PB();
+  // PR(); //Empty
+  // PG();
+  // PB();
 
   return 0;
 }
