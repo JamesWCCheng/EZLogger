@@ -75,6 +75,7 @@ main.cpp經過測試會印出
 最多只能傳入16個參數, 先天條件
 
 #特別修正
+- G++ 和 VC一些怪MACRO的展開行為不是很一致, 目前VC 跟 G++ 不用特別設定都可以用.
 - 把function都加上namespace{} 包起來成internal linkage 多個cpp include他也不要重複定義.
 - 加上一個TAG 方便grep吧? 可以動態改TAG = "你要的字串".
 - 把一些菜市場命名都冠上EZ_ prefix怕衝名.
