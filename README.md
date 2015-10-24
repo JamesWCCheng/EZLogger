@@ -8,7 +8,7 @@
 
 複製ezlogger.h到你目錄下  
 
-使用上只需寫P(_(你的變數),...)即可全部印出不須判別型別,超無腦der  
+使用上只需寫P(你的變數,...)即可全部印出不須判別型別,超無腦der  
 
 也可以換顏色  
 
@@ -20,43 +20,44 @@ PB -> LIGHT_BLUE
 
 也可以傳入指定顏色  
 
-PX(RED);  
+PX0(EZ_RED);  
 
-PX(LIGHT_RED);  
+PX0(EZ_LIGHT_RED);  
 
-PX(GREEN);  
+PX0(EZ_GREEN);  
 
-PX(LIGHT_GREEN);  
+PX0(EZ_LIGHT_GREEN);  
 
-PX(BLUE);  
+PX0(EZ_BLUE);  
 
-PX(LIGHT_BLUE);  
+PX0(EZ_LIGHT_BLUE);  
 
-PX(DARY_GRAY);  
+PX0(EZ_DARY_GRAY);  
 
-PX(CYAN);  
+PX0(EZ_CYAN);  
 
-PX(LIGHT_CYAN);  
+PX0(EZ_LIGHT_CYAN);  
 
-PX(PURPLE);  
+PX0(EZ_PURPLE);  
 
-PX(LIGHT_PURPLE);  
+PX0(EZ_LIGHT_PURPLE);  
 
-PX(BROWN);  
+PX0(EZ_BROWN);  
 
-PX(YELLOW);  
+PX0(EZ_YELLOW);  
 
-PX(LIGHT_GRAY);  
+PX0(EZ_LIGHT_GRAY);  
 
-PR();  
+PR0();  
 
-PG();  
+PG0();  
 
-PB();  
+PB0();  
 
 依序印出來的顏色是  
 
 <a href="" target="_blank"><img src="https://dl.dropboxusercontent.com/u/15611020/color.png"/></a>  
+P加上0意思是不帶入參數的(Workaround for g++ portability)  
 
 main.cpp經過測試會印出  
 
@@ -71,4 +72,9 @@ main.cpp經過測試會印出
 
 #know issue
 我不知道怎麼盼別是不是在gecko下 所以用\#ifdef GECKO
+
+#特別修正
+- 把function都加上namespace{} 包起來成internal linkage 多個cpp include他也不要重複定義.
+- 加上一個TAG 方便grep吧? 可以動態改TAG = "你要的字串".
+- 把一些菜市場命名都冠上EZ_ prefix怕衝名.
 
