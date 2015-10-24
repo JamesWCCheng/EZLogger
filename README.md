@@ -72,6 +72,7 @@ main.cpp經過測試會印出
 
 #know issue
 我不知道怎麼盼別是不是在gecko下 所以用\#ifdef GECKO
+最多只能傳入16個參數, 先天條件
 
 #特別修正
 - 把function都加上namespace{} 包起來成internal linkage 多個cpp include他也不要重複定義.
