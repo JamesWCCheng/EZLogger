@@ -4,7 +4,7 @@
 class MOZILLA
 {
 public:
-  void GECKO()
+  void Gecko()
   {
     P(this);
   }
@@ -27,7 +27,7 @@ int main() {
   const char* d = "abc";
   bool e = true;
   MOZILLA f;
-  f.GECKO();
+  f.Gecko();
   int32_t g = -123;
   int64_t h = -5566;
   uint32_t i = 123;
@@ -37,24 +37,28 @@ int main() {
 #else
   P(a, b, c, d, e, &f, g, h, i, j);
 #endif
-
-  /*PX(RED);
-  PX(LIGHT_RED);
-  PX(GREEN);
-  PX(LIGHT_GREEN);
-  PX(BLUE);
-  PX(LIGHT_BLUE);
-  PX(DARY_GRAY);
-  PX(CYAN);
-  PX(LIGHT_CYAN);
-  PX(PURPLE);
-  PX(LIGHT_PURPLE);
-  PX(BROWN);
-  PX(YELLOW);
-  PX(LIGHT_GRAY);*/
-  // PR(); //Empty
-  // PG();
-  // PB();
+  EZ_TAG = "123";
+  PR(a, b, c, d, e, &f, g, h, i, j);
+  PG(a, b, c, d, e, &f, g, h, i, j);
+  PB(a, b, c, d, e, &f, g, h, i, j);
+  PX0(EZ_RED);
+  PX0(EZ_LIGHT_RED);
+  PX0(EZ_GREEN);
+  PX0(EZ_LIGHT_GREEN);
+  PX0(EZ_BLUE);
+  PX0(EZ_LIGHT_BLUE);
+  PX0(EZ_DARY_GRAY);
+  PX0(EZ_CYAN);
+  PX0(EZ_LIGHT_CYAN);
+  PX(EZ_LIGHT_CYAN, a, b, c, d, e, &f, g, h, i, j);
+  PX0(EZ_PURPLE);
+  PX0(EZ_LIGHT_PURPLE);
+  PX0(EZ_BROWN);
+  PX0(EZ_YELLOW);
+  PX0(EZ_LIGHT_GRAY);
+  PR0(); //Empty
+  PG0();
+  PB0();
 
   return 0;
 }
