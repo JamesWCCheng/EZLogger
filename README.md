@@ -1,4 +1,6 @@
 # EZLogger
+BJ4
+http://ideone.com/laqZKC 
 
 請貼下面兩行在你的gecko code  
 
