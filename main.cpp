@@ -38,7 +38,7 @@ int main() {
   P(a, b, c, d, e, &f, g, h, i, j);
 #endif
 
-  PX(RED);
+  /*PX(RED);
   PX(LIGHT_RED);
   PX(GREEN);
   PX(LIGHT_GREEN);
@@ -51,7 +51,7 @@ int main() {
   PX(LIGHT_PURPLE);
   PX(BROWN);
   PX(YELLOW);
-  PX(LIGHT_GRAY);
+  PX(LIGHT_GRAY);*/
   // PR(); //Empty
   // PG();
   // PB();

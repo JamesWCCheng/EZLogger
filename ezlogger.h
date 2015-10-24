@@ -27,6 +27,7 @@
 #endif
 
 #define EXPAND(x) x
+#define EXPAND2(x, y) x, y
 #define CONCATENATE(x, y) x##y
 #define NARG(...) NARG_(__VA_ARGS__, RSEQ_N())
 #define NARG_(...) EXPAND(ARG_N(__VA_ARGS__))
@@ -35,24 +36,24 @@
 #define RSEQ_N() 16, 15, 14, 13, 12, 11, \
                  10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 
-#define EXTEND(...) EXTEND_(NARG(__VA_ARGS__), __VA_ARGS__)
-#define EXTEND_(N, ...) EXPAND(CONCATENATE(EXTEND_, N))(__VA_ARGS__)
-#define EXTEND_1(x, ...) std::make_pair(x, #x)
-#define EXTEND_2(x, ...) EXTEND_1(x), EXTEND_1(__VA_ARGS__)
-#define EXTEND_3(x, ...) EXTEND_1(x), EXTEND_2(__VA_ARGS__)
-#define EXTEND_4(x, ...) EXTEND_1(x), EXTEND_3(__VA_ARGS__)
-#define EXTEND_5(x, ...) EXTEND_1(x), EXTEND_4(__VA_ARGS__)
-#define EXTEND_6(x, ...) EXTEND_1(x), EXTEND_5(__VA_ARGS__)
-#define EXTEND_7(x, ...) EXTEND_1(x), EXTEND_6(__VA_ARGS__)
-#define EXTEND_8(x, ...) EXTEND_1(x), EXTEND_7(__VA_ARGS__)
-#define EXTEND_9(x, ...) EXTEND_1(x), EXTEND_8(__VA_ARGS__)
-#define EXTEND_10(x, ...) EXTEND_1(x), EXTEND_9(__VA_ARGS__)
-#define EXTEND_11(x, ...) EXTEND_1(x), EXTEND_10(__VA_ARGS__)
-#define EXTEND_12(x, ...) EXTEND_1(x), EXTEND_11(__VA_ARGS__)
-#define EXTEND_13(x, ...) EXTEND_1(x), EXTEND_12(__VA_ARGS__)
-#define EXTEND_14(x, ...) EXTEND_1(x), EXTEND_13(__VA_ARGS__)
-#define EXTEND_15(x, ...) EXTEND_1(x), EXTEND_14(__VA_ARGS__)
-#define EXTEND_16(x, ...) EXTEND_1(x), EXTEND_15(__VA_ARGS__)
+#define EXTEND(...) EXPAND(EXTEND_(NARG(__VA_ARGS__), __VA_ARGS__))
+#define EXTEND_(N, ...) EXPAND(CONCATENATE(EXTEND_, N)(__VA_ARGS__))
+#define EXTEND_1(x, ...) EXPAND(std::make_pair(x, #x))
+#define EXTEND_2(x, ...) EXPAND2(EXTEND_1(x), EXTEND_1(__VA_ARGS__))
+#define EXTEND_3(x, ...) EXPAND2(EXTEND_1(x), EXTEND_2(__VA_ARGS__))
+#define EXTEND_4(x, ...) EXPAND2(EXTEND_1(x), EXTEND_3(__VA_ARGS__))
+#define EXTEND_5(x, ...) EXPAND2(EXTEND_1(x), EXTEND_4(__VA_ARGS__))
+#define EXTEND_6(x, ...) EXPAND2(EXTEND_1(x), EXTEND_5(__VA_ARGS__))
+#define EXTEND_7(x, ...) EXPAND2(EXTEND_1(x), EXTEND_6(__VA_ARGS__))
+#define EXTEND_8(x, ...) EXPAND2(EXTEND_1(x), EXTEND_7(__VA_ARGS__))
+#define EXTEND_9(x, ...) EXPAND2(EXTEND_1(x), EXTEND_8(__VA_ARGS__))
+#define EXTEND_10(x, ...) EXPAND2(EXTEND_1(x), EXTEND_9(__VA_ARGS__))
+#define EXTEND_11(x, ...) EXPAND2(EXTEND_1(x), EXTEND_10(__VA_ARGS__))
+#define EXTEND_12(x, ...) EXPAND2(EXTEND_1(x), EXTEND_11(__VA_ARGS__))
+#define EXTEND_13(x, ...) EXPAND2(EXTEND_1(x), EXTEND_12(__VA_ARGS__))
+#define EXTEND_14(x, ...) EXPAND2(EXTEND_1(x), EXTEND_13(__VA_ARGS__))
+#define EXTEND_15(x, ...) EXPAND2(EXTEND_1(x), EXTEND_14(__VA_ARGS__))
+#define EXTEND_16(x, ...) EXPAND2(EXTEND_1(x), EXTEND_15(__VA_ARGS__))
 
 #ifdef GECKO // GECKO
 
