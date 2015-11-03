@@ -6,7 +6,7 @@
 #include <stdint.h>
 #include <cinttypes>
 
-#ifndef GECKO // GECKO
+#ifndef MOZ_XUL // GECKO only
 #define printf_stderr printf
 
 #define EZ_NONE ""
@@ -57,7 +57,7 @@ static const char* EZ_TAG = "EZLOG";
 #define EXTEND_15(x, ...) EXPAND2(EXTEND_1(x), EXTEND_14(__VA_ARGS__))
 #define EXTEND_16(x, ...) EXPAND2(EXTEND_1(x), EXTEND_15(__VA_ARGS__))
 
-#ifdef GECKO // GECKO
+#ifdef MOZ_XUL // GECKO only
 #define EZ_NONE "\033[m"
 #define EZ_RED "\033[0;32;31m"
 #define EZ_LIGHT_RED "\033[1;31m"

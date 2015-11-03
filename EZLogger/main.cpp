@@ -1,4 +1,3 @@
-//#define GECKO
 #include "ezlogger.h"
 #include <string>
 class MOZILLA
@@ -12,7 +11,7 @@ public:
 
 int main() {
 
-#ifdef GECKO
+#ifdef MOZ_XUL
   MOZ_LOG(0,0, ("some log\n"));
   NS_WARNING("only string\n");
   nsresult res = NS_OK;
@@ -32,7 +31,7 @@ int main() {
   int64_t h = -5566;
   uint32_t i = 123;
   uint64_t j = 1234;
-#ifdef GECKO
+#ifdef MOZ_XUL
   P(a, b, c, d, e, &f, g, h, i, j, foo, bar, msg, msg2, res);
 #else
   P(a, b, c, d, e, &f, g, h, i, j);
