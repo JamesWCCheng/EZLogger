@@ -209,16 +209,23 @@ namespace {
     ezPrint(std::forward<Types>(aArgs)...);
   }
 } //namespace
-#define P(...) PInternal("", __FUNCTION__, __LINE__, EXTEND(__VA_ARGS__))
-#define PR(...) PInternal(EZ_LIGHT_RED, __FUNCTION__, __LINE__, EXTEND(__VA_ARGS__))
-#define PG(...) PInternal(EZ_LIGHT_GREEN, __FUNCTION__, __LINE__, EXTEND(__VA_ARGS__))
-#define PB(...) PInternal(EZ_LIGHT_BLUE, __FUNCTION__, __LINE__, EXTEND(__VA_ARGS__))
-#define PX(EZ_COLOR, ...) PInternal(EZ_COLOR, __FUNCTION__, __LINE__, EXTEND(__VA_ARGS__))
 
-#define P0(...) PInternal("", __FUNCTION__, __LINE__)
-#define PR0(...) PInternal(EZ_LIGHT_RED, __FUNCTION__, __LINE__)
-#define PG0(...) PInternal(EZ_LIGHT_GREEN, __FUNCTION__, __LINE__)
-#define PB0(...) PInternal(EZ_LIGHT_BLUE, __FUNCTION__, __LINE__)
-#define PX0(EZ_COLOR, ...) PInternal(EZ_COLOR, __FUNCTION__, __LINE__)
+#ifdef _MSC_VER_
+#define FUNC_NAME FUNCSIG
+#else
+#define FUNC_NAME __PRETTY_FUNCTION__
+#endif
+
+#define P(...) PInternal("", FUNC_NAME, __LINE__, EXTEND(__VA_ARGS__))
+#define PR(...) PInternal(EZ_LIGHT_RED, FUNC_NAME, __LINE__, EXTEND(__VA_ARGS__))
+#define PG(...) PInternal(EZ_LIGHT_GREEN, FUNC_NAME, __LINE__, EXTEND(__VA_ARGS__))
+#define PB(...) PInternal(EZ_LIGHT_BLUE, FUNC_NAME, __LINE__, EXTEND(__VA_ARGS__))
+#define PX(EZ_COLOR, ...) PInternal(EZ_COLOR, FUNC_NAME, __LINE__, EXTEND(__VA_ARGS__))
+
+#define P0(...) PInternal("", FUNC_NAME, __LINE__)
+#define PR0(...) PInternal(EZ_LIGHT_RED, FUNC_NAME, __LINE__)
+#define PG0(...) PInternal(EZ_LIGHT_GREEN, FUNC_NAME, __LINE__)
+#define PB0(...) PInternal(EZ_LIGHT_BLUE, FUNC_NAME, __LINE__)
+#define PX0(EZ_COLOR, ...) PInternal(EZ_COLOR, FUNC_NAME, __LINE__)
 
 #endif
