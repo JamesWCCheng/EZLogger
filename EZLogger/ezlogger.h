@@ -210,8 +210,8 @@ namespace {
   }
 } //namespace
 
-#ifdef _MSC_VER_
-#define FUNC_NAME FUNCSIG
+#ifdef _MSC_VER
+#define FUNC_NAME __FUNCSIG__
 #else
 #define FUNC_NAME __PRETTY_FUNCTION__
 #endif
