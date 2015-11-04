@@ -4,7 +4,7 @@
 #include <utility>
 #include <string>
 #include <stdint.h>
-#include <cinttypes>
+#include <inttypes.h> // b2g has no <cinttypes>
 
 #ifndef MOZ_XUL // GECKO only
 #define printf_stderr printf
@@ -75,6 +75,7 @@ static const char* EZ_TAG = "EZLOG";
 #define EZ_LIGHT_GRAY "\033[0;37m"
 #define EZ_WHITE "\033[1;37m"
 
+#include "mozilla/Move.h" // For using Forward<T> in b2g.
 #include "nsLiteralString.h"
 #include "nsStringFwd.h"
 #include "nsString.h"
@@ -82,15 +83,15 @@ static const char* EZ_TAG = "EZLOG";
 #include "nsDebug.h" //For printf_stderr
 
 #ifdef NS_WARNING_COLOR
-  #undef NS_WARNING
-  #define NS_WARNING(str)                                       \
+#undef NS_WARNING
+#define NS_WARNING(str)                                       \
     NS_DebugBreak(NS_DEBUG_WARNING, LIGHT_RED str "\033[m", nullptr, __FILE__, __LINE__)
 #endif
 
 #ifdef MOZ_LOG_886
-  #undef MOZ_LOG
-  #define REAL_LOG(X) printf_stderr(LIGHT_BLUE X "\033[m")
-  #define MOZ_LOG(_module,_level, arg) REAL_LOG arg
+#undef MOZ_LOG
+#define REAL_LOG(X) printf_stderr(LIGHT_BLUE X "\033[m")
+#define MOZ_LOG(_module,_level, arg) REAL_LOG arg
 #endif
 
 /*
@@ -206,7 +207,11 @@ namespace {
   void PInternal(const char* aColor, const char* aFileName, const int aLineNum, Types&&...  aArgs)
   {
     printf_stderr("[%s] %s%s(%d) ", EZ_TAG, aColor, aFileName, aLineNum);
+#ifdef MOZ_XUL
+    ezPrint(mozilla::Forward<Types>(aArgs)...);
+#else
     ezPrint(std::forward<Types>(aArgs)...);
+#endif
   }
 } //namespace
 
