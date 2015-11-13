@@ -85,12 +85,12 @@ static const char* EZ_TAG = "EZLOG";
 #ifdef NS_WARNING_COLOR
 #undef NS_WARNING
 #define NS_WARNING(str)                                       \
-    NS_DebugBreak(NS_DEBUG_WARNING, LIGHT_RED str "\033[m", nullptr, __FILE__, __LINE__)
+    NS_DebugBreak(NS_DEBUG_WARNING, EZ_LIGHT_RED str "\033[m", nullptr, __FILE__, __LINE__)
 #endif
 
 #ifdef MOZ_LOG_886
 #undef MOZ_LOG
-#define REAL_LOG(X) printf_stderr(LIGHT_BLUE X "\033[m")
+#define REAL_LOG(F, X...) printf_stderr(EZ_LIGHT_BLUE F "\033[m", ##X)
 #define MOZ_LOG(_module,_level, arg) REAL_LOG arg
 #endif
 
@@ -215,11 +215,12 @@ namespace {
   }
 } //namespace
 
-#ifdef _MSC_VER
-#define FUNC_NAME __FUNCSIG__
-#else
-#define FUNC_NAME __PRETTY_FUNCTION__
-#endif
+// #ifdef _MSC_VER
+// #define FUNC_NAME __FUNCSIG__
+// #else
+// #define FUNC_NAME __PRETTY_FUNCTION__
+// #endif
+#define FUNC_NAME __func__
 
 #define P(...) PInternal("", FUNC_NAME, __LINE__, EXTEND(__VA_ARGS__))
 #define PR(...) PInternal(EZ_LIGHT_RED, FUNC_NAME, __LINE__, EXTEND(__VA_ARGS__))
