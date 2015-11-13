@@ -97,12 +97,12 @@ index 0000000..8f62be9
 +#ifdef NS_WARNING_COLOR
 +#undef NS_WARNING
 +#define NS_WARNING(str)                                       \
-+    NS_DebugBreak(NS_DEBUG_WARNING, LIGHT_RED str "\033[m", nullptr, __FILE__, __LINE__)
++    NS_DebugBreak(NS_DEBUG_WARNING, EZ_LIGHT_RED str "\033[m", nullptr, __FILE__, __LINE__)
 +#endif
 +
 +#ifdef MOZ_LOG_886
 +#undef MOZ_LOG
-+#define REAL_LOG(X) printf_stderr(LIGHT_BLUE X "\033[m")
++#define REAL_LOG(F, X...) printf_stderr(EZ_LIGHT_BLUE F "\033[m", ##X)
 +#define MOZ_LOG(_module,_level, arg) REAL_LOG arg
 +#endif
 +
@@ -228,9 +228,9 @@ index 0000000..8f62be9
 +} //namespace
 +
 +#ifdef _MSC_VER
-+#define FUNC_NAME __FUNCSIG__
++#define FUNC_NAME __func__
 +#else
-+#define FUNC_NAME __PRETTY_FUNCTION__
++#define FUNC_NAME __func__
 +#endif
 +
 +#define P(...) PInternal("", FUNC_NAME, __LINE__, EXTEND(__VA_ARGS__))
