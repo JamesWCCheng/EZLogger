@@ -75,6 +75,8 @@ static const char* EZ_TAG = "EZLOG";
 #define EZ_LIGHT_GRAY "\033[0;37m"
 #define EZ_WHITE "\033[1;37m"
 
+#define EZ_LIGHT_RED_WITH_TAG "\033[0;32;31m [EZLOG] "
+#define EZ_LIGHT_BLUE_WITH_TAG "\033[1;34m [EZLOG] "
 #include "mozilla/Move.h" // For using Forward<T> in b2g.
 #include "nsLiteralString.h"
 #include "nsStringFwd.h"
@@ -85,12 +87,12 @@ static const char* EZ_TAG = "EZLOG";
 #ifdef NS_WARNING_COLOR
 #undef NS_WARNING
 #define NS_WARNING(str)                                       \
-    NS_DebugBreak(NS_DEBUG_WARNING, EZ_LIGHT_RED str "\033[m", nullptr, __FILE__, __LINE__)
+    NS_DebugBreak(NS_DEBUG_WARNING, EZ_LIGHT_RED_WITH_TAG str "\033[m", nullptr, __FILE__, __LINE__)
 #endif
 
 #ifdef MOZ_LOG_886
 #undef MOZ_LOG
-#define REAL_LOG(F, X...) printf_stderr(EZ_LIGHT_BLUE F "\033[m", ##X)
+#define REAL_LOG(F, X...) printf_stderr(EZ_LIGHT_BLUE_WITH_TAG F "\033[m", ##X)
 #define MOZ_LOG(_module,_level, arg) REAL_LOG arg
 #endif
 
