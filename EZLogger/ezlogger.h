@@ -120,6 +120,32 @@ namespace {
     }
   }
 
+  template<>
+  void printInternal(const nsTArray<uint8_t>& aArray, const char* const aObjName)
+  {
+    int index = 0;
+    for (auto itr = aArray.begin(); itr != aArray.end(); itr++)
+    {
+      std::ostringstream ss;
+      ss << aObjName << "[" << index << "] = " << static_cast<uint32_t>(*itr) << "\n";
+      printf_stderr("%s", ss.str().c_str());
+      index++;
+    }
+  }
+
+  template<>
+  void printInternal(const nsTArray<char>& aArray, const char* const aObjName)
+  {
+    int index = 0;
+    for (auto itr = aArray.begin(); itr != aArray.end(); itr++)
+    {
+      std::ostringstream ss;
+      ss << aObjName << "[" << index << "] = " << static_cast<int32_t>(*itr) << "\n";
+      printf_stderr("%s", ss.str().c_str());
+      index++;
+    }
+  }
+
   // For nsAutoString
   void printInternal(const nsAutoString& aAutoStr, const char* const aObjName)
   {
@@ -163,6 +189,33 @@ namespace {
       index++;
     }
   }
+
+  template<>
+  void printInternal(const std::vector<uint8_t>& aVec, const char* const aObjName)
+  {
+    int index = 0;
+    for (auto itr = aVec.begin(); itr != aVec.end(); itr++)
+    {
+      std::ostringstream ss;
+      ss << aObjName << "[" << index << "] = " << static_cast<uint32_t>(*itr) << "\n";
+      printf_stderr("%s", ss.str().c_str());
+      index++;
+    }
+  }
+
+  template<>
+  void printInternal(const std::vector<char>& aVec, const char* const aObjName)
+  {
+    int index = 0;
+    for (auto itr = aVec.begin(); itr != aVec.end(); itr++)
+    {
+      std::ostringstream ss;
+      ss << aObjName << "[" << index << "] = " << static_cast<int32_t>(*itr) << "\n";
+      printf_stderr("%s", ss.str().c_str());
+      index++;
+    }
+  }
+
   template<class Key, class Value>
   void printInternal(const std::map<Key, Value> aMap, const char* const aObjName)
   {
