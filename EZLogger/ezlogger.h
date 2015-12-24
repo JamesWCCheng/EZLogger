@@ -137,7 +137,7 @@ namespace {
 } // namespace
 #endif
 namespace {
-  template<class T> 
+  template<class T>
   void printInternal(const std::vector<T>& aVec, const char* const aObjName)
   {
     int index = 0;
@@ -145,7 +145,7 @@ namespace {
     {
       std::ostringstream ss;
       ss << aObjName << "[" << index << "] = " << *itr << "\n";
-      printf_stderr(ss.str().c_str());
+      printf_stderr("%s", ss.str().c_str());
       index++;
     }
   }
@@ -156,7 +156,7 @@ namespace {
     {
       std:: ostringstream ss;
       ss << aObjName << "[" << pair.first << ", " << pair.second << "]\n";
-      printf_stderr(ss.str().c_str());
+      printf_stderr("%s",ss.str().c_str());
     }
   }
   template<class Key, class Value>
@@ -166,7 +166,7 @@ namespace {
     {
       std::ostringstream ss;
       ss << aObjName << "[" << pair.first << ", " << pair.second << "]\n";
-      printf_stderr(ss.str().c_str());
+      printf_stderr("%s",ss.str().c_str());
     }
   }
   // For std string
