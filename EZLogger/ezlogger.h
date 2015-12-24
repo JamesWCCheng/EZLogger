@@ -106,6 +106,20 @@ nsCString bar = NS_LITERAL_CSTRING
 
 */
 namespace {
+  // For nsTArrya<T>
+  template<class T>
+  void printInternal(const nsTArray<T>& aArray, const char* const aObjName)
+  {
+    int index = 0;
+    for (auto itr = aArray.begin(); itr != aArray.end(); itr++)
+    {
+      std::ostringstream ss;
+      ss << aObjName << "[" << index << "] = " << *itr << "\n";
+      printf_stderr("%s", ss.str().c_str());
+      index++;
+    }
+  }
+
   // For nsAutoString
   void printInternal(const nsAutoString& aAutoStr, const char* const aObjName)
   {
@@ -159,6 +173,18 @@ namespace {
       printf_stderr("%s",ss.str().c_str());
     }
   }
+#ifdef MOZ_WIDGET_GONK
+  template<class Key, class Value>
+  void printInternal(const std::tr1::unordered_map<Key, Value> aMap, const char* const aObjName)
+  {
+    for (auto& pair : aMap)
+    {
+      std::ostringstream ss;
+      ss << aObjName << "[" << pair.first << ", " << pair.second << "]\n";
+      printf_stderr("%s",ss.str().c_str());
+    }
+  }
+#else
   template<class Key, class Value>
   void printInternal(const std::unordered_map<Key, Value> aMap, const char* const aObjName)
   {
@@ -169,6 +195,7 @@ namespace {
       printf_stderr("%s",ss.str().c_str());
     }
   }
+#endif
   // For std string
   void printInternal(std::string aStdStr, const char* const aObjName)
   {
