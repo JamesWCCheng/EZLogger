@@ -1,5 +1,6 @@
 #include "ezlogger.h"
 #include <string>
+#include <vector>
 class MOZILLA
 {
 public:
@@ -20,6 +21,23 @@ int main() {
   nsAutoString msg = NS_ConvertASCIItoUTF16("nsAutoString");
   nsAutoCString msg2("nsAutoCString");
 #endif
+  std::vector<int> vec;
+  vec.push_back(1);
+  vec.push_back(2);
+  vec.push_back(3);
+
+  std::vector<std::string> vecStr;
+  vecStr.push_back("1");
+  vecStr.push_back("2");
+  vecStr.push_back("3");
+
+  std::map<std::string, double> s2d;
+  s2d["mozilla"] = 123.5566;
+  s2d["gecko"] = 1234.0;
+
+  std::unordered_map<std::string, std::string> s2s;
+  s2s["mozilla"] = "mozilla";
+  s2s["gecko"] = "gecko";
   float a = 55.66f;
   std::string b = "haha";
   double c = 42689.2;
@@ -34,7 +52,7 @@ int main() {
 #ifdef MOZ_XUL
   P(a, b, c, d, e, &f, g, h, i, j, foo, bar, msg, msg2, res);
 #else
-  P(a, b, c, d, e, &f, g, h, i, j);
+  P(a, b, c, d, e, &f, g, h, i, j, vec, vecStr, s2d, s2s);
 #endif
   EZ_TAG = "123";
   PR(a, b, c, d, e, &f, g, h, i, j);

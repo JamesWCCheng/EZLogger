@@ -5,6 +5,10 @@
 #include <string>
 #include <stdint.h>
 #include <inttypes.h> // b2g has no <cinttypes>
+#include <vector>
+#include <sstream>
+#include <map>
+#include <unordered_map>
 
 #ifndef MOZ_XUL // GECKO only
 #define printf_stderr printf
@@ -133,6 +137,38 @@ namespace {
 } // namespace
 #endif
 namespace {
+  template<class T> 
+  void printInternal(const std::vector<T>& aVec, const char* const aObjName)
+  {
+    int index = 0;
+    for (auto itr = aVec.begin(); itr != aVec.end(); itr++)
+    {
+      std::ostringstream ss;
+      ss << aObjName << "[" << index << "] = " << *itr << "\n";
+      printf_stderr(ss.str().c_str());
+      index++;
+    }
+  }
+  template<class Key, class Value>
+  void printInternal(const std::map<Key, Value> aMap, const char* const aObjName)
+  {
+    for (auto& pair : aMap)
+    {
+      std:: ostringstream ss;
+      ss << aObjName << "[" << pair.first << ", " << pair.second << "]\n";
+      printf_stderr(ss.str().c_str());
+    }
+  }
+  template<class Key, class Value>
+  void printInternal(const std::unordered_map<Key, Value> aMap, const char* const aObjName)
+  {
+    for (auto& pair : aMap)
+    {
+      std::ostringstream ss;
+      ss << aObjName << "[" << pair.first << ", " << pair.second << "]\n";
+      printf_stderr(ss.str().c_str());
+    }
+  }
   // For std string
   void printInternal(std::string aStdStr, const char* const aObjName)
   {
