@@ -10,7 +10,10 @@
 #include <map>
 #include <unordered_map>
 
-#ifndef MOZ_XUL // GECKO only
+#if defined(MOZ_XUL)
+#include "mozilla/Move.h" // For using Forward<T> in b2g.
+#endif
+#if ! defined(MOZ_XUL) || ! defined(MOZILLA_INTERNAL_API) // GECKO only
 #define printf_stderr printf
 
 #define EZ_NONE ""
@@ -61,7 +64,7 @@ static const char* EZ_TAG = "EZLOG";
 #define EXTEND_15(x, ...) EXPAND2(EXTEND_1(x), EXTEND_14(__VA_ARGS__))
 #define EXTEND_16(x, ...) EXPAND2(EXTEND_1(x), EXTEND_15(__VA_ARGS__))
 
-#ifdef MOZ_XUL // GECKO only
+#if defined(MOZ_XUL) && defined(MOZILLA_INTERNAL_API) // GECKO only
 #define EZ_NONE "\033[m"
 #define EZ_RED "\033[0;32;31m"
 #define EZ_LIGHT_RED "\033[1;31m"
@@ -81,7 +84,7 @@ static const char* EZ_TAG = "EZLOG";
 
 #define EZ_LIGHT_RED_WITH_TAG "\033[0;32;31m [EZLOG] "
 #define EZ_LIGHT_BLUE_WITH_TAG "\033[1;34m [EZLOG] "
-#include "mozilla/Move.h" // For using Forward<T> in b2g.
+
 #include "nsLiteralString.h"
 #include "nsStringFwd.h"
 #include "nsString.h"
@@ -325,7 +328,7 @@ namespace {
   void PInternal(const char* aColor, const char* aFileName, const int aLineNum, Types&&...  aArgs)
   {
     printf_stderr("[%s] %s%s(%d) ", EZ_TAG, aColor, aFileName, aLineNum);
-#ifdef MOZ_XUL
+#if defined(MOZ_XUL) // GECKO only
     ezPrint(mozilla::Forward<Types>(aArgs)...);
 #else
     ezPrint(std::forward<Types>(aArgs)...);
