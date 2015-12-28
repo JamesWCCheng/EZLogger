@@ -15,7 +15,12 @@
 #endif
 #if ! defined(MOZ_XUL) || ! defined(MOZILLA_INTERNAL_API) // GECKO only
 #define printf_stderr printf
-
+#if defined(MOZ_WIDGET_GONK)
+#undef printf_stderr
+#include <android/log.h>
+#define B2GLOG(...) __android_log_print(ANDROID_LOG_DEBUG, EZ_TAG, __VA_ARGS__)
+#define printf_stderr B2GLOG
+#endif
 #define EZ_NONE ""
 #define EZ_RED ""
 #define EZ_LIGHT_RED ""

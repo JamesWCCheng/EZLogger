@@ -6,10 +6,10 @@ ezlogger installer
 
 diff --git a/xpcom/glue/ezlogger.h b/xpcom/glue/ezlogger.h
 new file mode 100644
-index 0000000..c621433
+index 0000000..5a6b598
 --- /dev/null
 +++ b/xpcom/glue/ezlogger.h
-@@ -0,0 +1,358 @@
+@@ -0,0 +1,363 @@
 +#ifndef __EZLOGGER_H__
 +#define __EZLOGGER_H__
 +#include <stdio.h>
@@ -27,7 +27,12 @@ index 0000000..c621433
 +#endif
 +#if ! defined(MOZ_XUL) || ! defined(MOZILLA_INTERNAL_API) // GECKO only
 +#define printf_stderr printf
-+
++#if defined(MOZ_WIDGET_GONK)
++#undef printf_stderr
++#include <android/log.h>
++#define B2GLOG(...) __android_log_print(ANDROID_LOG_DEBUG, EZ_TAG, __VA_ARGS__)
++#define printf_stderr B2GLOG
++#endif
 +#define EZ_NONE ""
 +#define EZ_RED ""
 +#define EZ_LIGHT_RED ""
