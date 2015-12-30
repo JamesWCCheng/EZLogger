@@ -13,6 +13,7 @@
 #if defined(MOZ_XUL)
 #include "mozilla/Move.h" // For using Forward<T> in b2g.
 #endif
+
 #if ! defined(MOZ_XUL) || ! defined(MOZILLA_INTERNAL_API) // GECKO only
 #define printf_stderr printf
 #if defined(MOZ_WIDGET_GONK)
@@ -21,6 +22,10 @@
 #define B2GLOG(...) __android_log_print(ANDROID_LOG_DEBUG, EZ_TAG, __VA_ARGS__)
 #define printf_stderr B2GLOG
 #endif
+
+#endif
+
+#ifdef _MSC_VER
 #define EZ_NONE ""
 #define EZ_RED ""
 #define EZ_LIGHT_RED ""
@@ -37,7 +42,26 @@
 #define EZ_YELLOW ""
 #define EZ_LIGHT_GRAY ""
 #define EZ_WHITE ""
+
+#else
+#define EZ_NONE "\033[m"
+#define EZ_RED "\033[0;32;31m"
+#define EZ_LIGHT_RED "\033[1;31m"
+#define EZ_GREEN "\033[0;32;32m"
+#define EZ_LIGHT_GREEN "\033[1;32m"
+#define EZ_BLUE "\033[0;32;34m"
+#define EZ_LIGHT_BLUE "\033[1;34m"
+#define EZ_DARY_GRAY "\033[1;30m"
+#define EZ_CYAN "\033[0;36m"
+#define EZ_LIGHT_CYAN "\033[1;36m"
+#define EZ_PURPLE "\033[0;35m"
+#define EZ_LIGHT_PURPLE "\033[1;35m"
+#define EZ_BROWN "\033[0;33m"
+#define EZ_YELLOW "\033[1;33m"
+#define EZ_LIGHT_GRAY "\033[0;37m"
+#define EZ_WHITE "\033[1;37m"
 #endif
+
 static const char* EZ_TAG = "EZLOG";
 
 #define EXPAND(x) x
@@ -70,22 +94,6 @@ static const char* EZ_TAG = "EZLOG";
 #define EXTEND_16(x, ...) EXPAND2(EXTEND_1(x), EXTEND_15(__VA_ARGS__))
 
 #if defined(MOZ_XUL) && defined(MOZILLA_INTERNAL_API) // GECKO only
-#define EZ_NONE "\033[m"
-#define EZ_RED "\033[0;32;31m"
-#define EZ_LIGHT_RED "\033[1;31m"
-#define EZ_GREEN "\033[0;32;32m"
-#define EZ_LIGHT_GREEN "\033[1;32m"
-#define EZ_BLUE "\033[0;32;34m"
-#define EZ_LIGHT_BLUE "\033[1;34m"
-#define EZ_DARY_GRAY "\033[1;30m"
-#define EZ_CYAN "\033[0;36m"
-#define EZ_LIGHT_CYAN "\033[1;36m"
-#define EZ_PURPLE "\033[0;35m"
-#define EZ_LIGHT_PURPLE "\033[1;35m"
-#define EZ_BROWN "\033[0;33m"
-#define EZ_YELLOW "\033[1;33m"
-#define EZ_LIGHT_GRAY "\033[0;37m"
-#define EZ_WHITE "\033[1;37m"
 
 #define EZ_LIGHT_RED_WITH_TAG "\033[0;32;31m [EZLOG] "
 #define EZ_LIGHT_BLUE_WITH_TAG "\033[1;34m [EZLOG] "
