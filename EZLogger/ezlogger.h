@@ -9,7 +9,14 @@
 #include <sstream>
 #include <map>
 #include <unordered_map>
-
+#include <functional>
+template< class T >
+T* Addressof(T& arg)
+{
+    return reinterpret_cast<T*>(
+               &const_cast<char&>(
+                  reinterpret_cast<const volatile char&>(arg)));
+}
 #if defined(MOZ_XUL)
 #include "mozilla/Move.h" // For using Forward<T> in b2g.
 #endif
@@ -76,7 +83,7 @@ static const char* EZ_TAG = "EZLOG";
 
 #define EXTEND(...) EXPAND(EXTEND_(NARG(__VA_ARGS__), __VA_ARGS__))
 #define EXTEND_(N, ...) EXPAND(CONCATENATE(EXTEND_, N)(__VA_ARGS__))
-#define EXTEND_1(x, ...) EXPAND(std::make_pair(x, #x))
+#define EXTEND_1(x, ...) EXPAND(std::make_pair(Addressof(x), #x))
 #define EXTEND_2(x, ...) EXPAND2(EXTEND_1(x), EXTEND_1(__VA_ARGS__))
 #define EXTEND_3(x, ...) EXPAND2(EXTEND_1(x), EXTEND_2(__VA_ARGS__))
 #define EXTEND_4(x, ...) EXPAND2(EXTEND_1(x), EXTEND_3(__VA_ARGS__))
@@ -137,6 +144,58 @@ namespace {
   }
 
   template<>
+  void printInternal(const nsTArray<nsAString>& aArray, const char* const aObjName)
+  {
+    int index = 0;
+    for (auto itr = aArray.begin(); itr != aArray.end(); itr++)
+    {
+      std::ostringstream ss;
+      ss << aObjName << "[" << index << "] = " << NS_ConvertUTF16toUTF8(*itr).get() << "\n";
+      printf_stderr("%s", ss.str().c_str());
+      index++;
+    }
+  }
+
+  template<>
+  void printInternal(const nsTArray<nsString>& aArray, const char* const aObjName)
+  {
+    int index = 0;
+    for (auto itr = aArray.begin(); itr != aArray.end(); itr++)
+    {
+      std::ostringstream ss;
+      ss << aObjName << "[" << index << "] = " << NS_ConvertUTF16toUTF8(*itr).get() << "\n";
+      printf_stderr("%s", ss.str().c_str());
+      index++;
+    }
+  }
+
+  template<>
+  void printInternal(const nsTArray<nsACString>& aArray, const char* const aObjName)
+  {
+    int index = 0;
+    for (auto itr = aArray.begin(); itr != aArray.end(); itr++)
+    {
+      std::ostringstream ss;
+      ss << aObjName << "[" << index << "] = " << nsPromiseFlatCString(*itr).get() << "\n";
+      printf_stderr("%s", ss.str().c_str());
+      index++;
+    }
+  }
+
+  template<>
+  void printInternal(const nsTArray<nsCString>& aArray, const char* const aObjName)
+  {
+    int index = 0;
+    for (auto itr = aArray.begin(); itr != aArray.end(); itr++)
+    {
+      std::ostringstream ss;
+      ss << aObjName << "[" << index << "] = " << (*itr).get() << "\n";
+      printf_stderr("%s", ss.str().c_str());
+      index++;
+    }
+  }
+
+  template<>
   void printInternal(const nsTArray<uint8_t>& aArray, const char* const aObjName)
   {
     int index = 0;
@@ -177,12 +236,12 @@ namespace {
   // For nsACString
   void printInternal(const nsACString& aACStr, const char* const aObjName)
   {
-    printf_stderr("%s = %s", aObjName, nsPromiseFlatCString(aACStr).get());
+    printf_stderr("nsACString %s = %s", aObjName, nsPromiseFlatCString(aACStr).get());
   }
   // For nsAString
   void printInternal(const nsAString& aAStr, const char* const aObjName)
   {
-    printf_stderr("%s = %s", aObjName,
+    printf_stderr("nsAString %s = %s", aObjName,
       NS_ConvertUTF16toUTF8(nsPromiseFlatString(aAStr).get()).get());
   }
 
@@ -323,7 +382,7 @@ namespace {
   template<class Type>
   void ezPrint(
     const std::pair<Type, const char *> &arg) {
-    printInternal(arg.first, arg.second);
+    printInternal(*arg.first, arg.second);
     ezPrint();
   }
 
@@ -332,7 +391,7 @@ namespace {
     const std::pair<Type, const char *> &arg,
     const std::pair<Types, const char *> &... args) {
     // first is the real object, second is the object variable name.
-    printInternal(arg.first, arg.second);
+    printInternal(*arg.first, arg.second);
     printf_stderr(", ");
     ezPrint(args...);
   }
