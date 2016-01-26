@@ -104,16 +104,16 @@ static const char* EZ_TAG = "EZLOG";
 #include "nsString.h"
 #include "nsError.h" // For nsresult
 #include "nsDebug.h" //For printf_stderr
-
+#include "nsPrintfCString.h" //For nsPrintfCString
 #ifdef NS_WARNING_COLOR
 #undef NS_WARNING
 #define NS_WARNING(str)                                       \
-    NS_DebugBreak(NS_DEBUG_WARNING, EZ_LIGHT_RED_WITH_TAG str "\033[m", nullptr, __FILE__, __LINE__)
+    NS_DebugBreak(NS_DEBUG_WARNING, nsPrintfCString("%s%s%s", EZ_LIGHT_RED_WITH_TAG, str, "\033[m").get(), nullptr, __FILE__, __LINE__)
 #endif
 
 #ifdef MOZ_LOG_886
 #undef MOZ_LOG
-#define REAL_LOG(F, X...) printf_stderr(EZ_LIGHT_BLUE_WITH_TAG F "\033[m", ##X)
+#define REAL_LOG(F, X...) printf_stderr(EZ_LIGHT_BLUE_WITH_TAG F "\n\033[m", ##X)
 #define MOZ_LOG(_module,_level, arg) REAL_LOG arg
 #endif
 
