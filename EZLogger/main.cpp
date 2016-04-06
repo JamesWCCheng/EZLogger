@@ -1,6 +1,7 @@
 #include "ezlogger.h"
 #include <string>
 #include <vector>
+
 class MOZILLA
 {
 public:
