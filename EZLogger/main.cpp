@@ -12,6 +12,22 @@ public:
 
 int main() {
 
+  //Test bin2Hex
+  unsigned char ubin[] = {0xFF, 0xEE, 0x00, 0x55, 0x66};
+  std::vector<std::remove_pointer<std::decay<decltype(ubin)>::type>::type> ubinVec;
+  std::copy(ubin, ubin + 5, std::back_inserter(ubinVec));
+
+  char* signedBin = reinterpret_cast<char*>(&ubin[0]);
+
+  std::vector<std::remove_pointer<std::decay<decltype(signedBin)>::type>::type> signedbinVec;
+  std::copy(signedBin, signedBin + 5, std::back_inserter(signedbinVec));
+  PG(bin2hex(signedBin, 5));
+  PG(bin2hex(ubin, 5));
+  PG(ToVector(signedBin, 5));
+  PG(ToVector(ubin, 5));
+  PG(ubinVec);
+  PG(signedbinVec);
+
 #ifdef MOZ_XUL
   MOZ_LOG(0,0, ("some log\n"));
   NS_WARNING("only string\n");
@@ -49,10 +65,12 @@ int main() {
   int64_t h = -5566;
   uint32_t i = 123;
   uint64_t j = 1234;
+
 #ifdef MOZ_XUL
   P(a, b, c, d, e, &f, g, h, i, j, foo, bar, msg, msg2, res);
 #else
   P(a, b, c, d, e, &f, g, h, i, j, vec, vecStr, s2d, s2s);
+
 #endif
   EZ_TAG = "123";
   PR(a, b, c, d, e, &f, g, h, i, j);
