@@ -256,7 +256,7 @@ namespace {
       vec.push_back(*itr);
     }
     auto hexString = bin2hex(vec);
-    printf_stderr("%s = %s, unsigned nsTArray length = %d", aObjName, hexString, vec.size());
+    printf_stderr("%s = %s, unsigned nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
   }
 
   template<>
@@ -269,7 +269,7 @@ namespace {
       vec.push_back(*itr);
     }
     auto hexString = bin2hex(vec);
-    printf_stderr("%s = %s, signed nsTArray length = %d", aObjName, hexString, vec.size());
+    printf_stderr("%s = %s, signed nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
   }
 
   // For nsAutoString
