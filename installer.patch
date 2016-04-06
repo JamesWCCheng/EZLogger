@@ -6,10 +6,10 @@ installer
 
 diff --git a/xpcom/glue/ezlogger.h b/xpcom/glue/ezlogger.h
 new file mode 100644
-index 0000000..fd018d6
+index 0000000..ceb92bf
 --- /dev/null
 +++ b/xpcom/glue/ezlogger.h
-@@ -0,0 +1,434 @@
+@@ -0,0 +1,477 @@
 +#ifndef __EZLOGGER_H__
 +#define __EZLOGGER_H__
 +#include <stdio.h>
@@ -19,9 +19,58 @@ index 0000000..fd018d6
 +#include <inttypes.h> // b2g has no <cinttypes>
 +#include <vector>
 +#include <sstream>
++#include <iomanip>
 +#include <map>
 +#include <unordered_map>
 +#include <functional>
++#include <cstring> // strlen
++#include <iterator>
++// Helper function to implement byte array to hex string API.
++namespace {
++
++  template<class Type, class LengthType>
++  auto
++  ToVector(const Type* aData, LengthType aLength) -> std::vector<Type>
++  {
++    std::vector<Type> vec;
++    std::copy(aData, aData + aLength, std::back_inserter(vec));
++    return vec;
++  }
++
++  std::string bin2hex(const std::vector<unsigned char> &bin) {
++    std::ostringstream oss;
++    for (auto b : bin) {
++      oss << std::setfill('0') << std::setw(2) << std::hex << static_cast<unsigned int>(b);
++    }
++    return oss.str();
++  }
++
++  std::string bin2hex(const std::vector<char> &bin) {
++    std::ostringstream oss;
++    for (auto b : bin) {
++      // signed char cast to unsgined int will fill with FFFFFF, so need to cast to unsigned char first.
++      oss << std::setfill('0') << std::setw(2) << std::hex <<static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(&b));
++    }
++    return oss.str();
++  }
++
++  std::string bin2hex(const unsigned char *bin, size_t len) {
++    std::ostringstream oss;
++    for (size_t i = 0; i < len; i++) {
++      oss << std::setfill('0') << std::setw(2) << std::hex << static_cast<unsigned int>(bin[i]);
++    }
++    return oss.str();
++  }
++
++  std::string bin2hex(const char *bin, size_t len) {
++    auto forcelyunsigned = reinterpret_cast<const unsigned char*>(bin);
++    std::ostringstream oss;
++    for (size_t i = 0; i < len; i++) {
++      oss << std::setfill('0') << std::setw(2) << std::hex << static_cast<unsigned int>(forcelyunsigned[i]);
++    }
++    return oss.str();
++  }
++}
 +
 +#if defined(MOZ_XUL)
 +#include "mozilla/Move.h" // For using Forward<T> in b2g.
@@ -212,27 +261,27 @@ index 0000000..fd018d6
 +  template<>
 +  void printInternal(const nsTArray<uint8_t>& aArray, const char* const aObjName)
 +  {
-+    int index = 0;
++    std::vector<uint8_t> vec;
++    // deep copy it, since I don't know if nsTArray stores data consecutively or not.
 +    for (auto itr = aArray.begin(); itr != aArray.end(); itr++)
 +    {
-+      std::ostringstream ss;
-+      ss << aObjName << "[" << index << "] = " << static_cast<uint32_t>(*itr) << "\n";
-+      printf_stderr("%s", ss.str().c_str());
-+      index++;
++      vec.push_back(*itr);
 +    }
++    auto hexString = bin2hex(vec);
++    printf_stderr("%s = %s, unsigned nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
 +  }
 +
 +  template<>
 +  void printInternal(const nsTArray<char>& aArray, const char* const aObjName)
 +  {
-+    int index = 0;
++    std::vector<char> vec;
++    // deep copy it, since I don't know if nsTArray stores data consecutively or not.
 +    for (auto itr = aArray.begin(); itr != aArray.end(); itr++)
 +    {
-+      std::ostringstream ss;
-+      ss << aObjName << "[" << index << "] = " << static_cast<int32_t>(*itr) << "\n";
-+      printf_stderr("%s", ss.str().c_str());
-+      index++;
++      vec.push_back(*itr);
 +    }
++    auto hexString = bin2hex(vec);
++    printf_stderr("%s = %s, signed nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
 +  }
 +
 +  // For nsAutoString
@@ -266,7 +315,7 @@ index 0000000..fd018d6
 +    printf_stderr("%s = %x", aObjName, static_cast<uint32_t>(aRes));
 +  }
 +} // namespace
-+#endif
++#endif //defined(MOZ_XUL) && defined(MOZILLA_INTERNAL_API)
 +namespace {
 +  template<class T>
 +  void printInternal(const std::vector<T>& aVec, const char* const aObjName)
@@ -284,27 +333,15 @@ index 0000000..fd018d6
 +  template<>
 +  void printInternal(const std::vector<uint8_t>& aVec, const char* const aObjName)
 +  {
-+    int index = 0;
-+    for (auto itr = aVec.begin(); itr != aVec.end(); itr++)
-+    {
-+      std::ostringstream ss;
-+      ss << aObjName << "[" << index << "] = " << static_cast<uint32_t>(*itr) << "\n";
-+      printf_stderr("%s", ss.str().c_str());
-+      index++;
-+    }
++    auto hexString = bin2hex(aVec);
++    printf_stderr("%s = %s, unsgined vector length = %lu", aObjName, hexString.c_str(), aVec.size());
 +  }
 +
 +  template<>
 +  void printInternal(const std::vector<char>& aVec, const char* const aObjName)
 +  {
-+    int index = 0;
-+    for (auto itr = aVec.begin(); itr != aVec.end(); itr++)
-+    {
-+      std::ostringstream ss;
-+      ss << aObjName << "[" << index << "] = " << static_cast<int32_t>(*itr) << "\n";
-+      printf_stderr("%s", ss.str().c_str());
-+      index++;
-+    }
++    auto hexString = bin2hex(aVec);
++    printf_stderr("%s = %s, signed vector length = %lu", aObjName, hexString.c_str(), aVec.size());
 +  }
 +
 +  template<class Key, class Value>
@@ -354,6 +391,12 @@ index 0000000..fd018d6
 +  void printInternal(const char* aStr, const char* const aObjName)
 +  {
 +    printf_stderr("%s = %s", aObjName, aStr);
++    printf_stderr("hex form %s = %s", aObjName, bin2hex(aStr, strlen(aStr)).c_str());
++  }
++  void printInternal(const unsigned char* aStr, const char* const aObjName)
++  {
++    printf_stderr("%s = %s", aObjName, aStr);
++    printf_stderr("hex form %s = %s", aObjName, bin2hex(aStr, strlen(reinterpret_cast<const char*>(aStr))).c_str());
 +  }
 +  // For float
 +  void printInternal(float aVal, const char* const aObjName)
