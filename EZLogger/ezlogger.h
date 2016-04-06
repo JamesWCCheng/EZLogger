@@ -12,6 +12,7 @@
 #include <unordered_map>
 #include <functional>
 #include <cstring> // strlen
+#include <iterator>
 // Helper function to implement byte array to hex string API.
 namespace {
 
