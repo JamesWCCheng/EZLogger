@@ -66,7 +66,7 @@ namespace {
 
 #if ! defined(MOZ_XUL) || ! defined(MOZILLA_INTERNAL_API) // GECKO only
 #define printf_stderr printf
-#if defined(MOZ_WIDGET_GONK)
+#if defined(MOZ_WIDGET_GONK) || defined(MOZ_WIDGET_ANDROID)
 #undef printf_stderr
 #include <android/log.h>
 #define B2GLOG(...) __android_log_print(ANDROID_LOG_DEBUG, EZ_TAG, __VA_ARGS__)
@@ -342,7 +342,7 @@ namespace {
       printf_stderr("%s",ss.str().c_str());
     }
   }
-#ifdef MOZ_WIDGET_GONK
+#if defined(MOZ_WIDGET_ANDROID) || defined(MOZ_WIDGET_GONK)
   template<class Key, class Value>
   void printInternal(const std::tr1::unordered_map<Key, Value> aMap, const char* const aObjName)
   {
