@@ -6,8 +6,6 @@ http://ideone.com/laqZKC
 
 \#include "ezlogger.h"  
 
-複製ezlogger.h到你目錄下  
-
 使用上只需寫P(你的變數,...)即可全部印出不須判別型別,超無腦der  
 
 也可以換顏色  
@@ -71,7 +69,6 @@ main.cpp經過測試會印出
 如果#define MOZ_LOG_886, 行為是會把PR_LOG導到printf_stderr然後套上藍色  
 
 #know issue
-我不知道怎麼盼別是不是在gecko下 所以用\#ifdef GECKO
 最多只能傳入16個參數, 先天條件
 
 #特別修正
@@ -79,4 +76,8 @@ main.cpp經過測試會印出
 - 把function都加上namespace{} 包起來成internal linkage 多個cpp include他也不要重複定義.
 - 加上一個TAG 方便grep吧? 可以動態改TAG = "你要的字串".
 - 把一些菜市場命名都冠上EZ_ prefix怕衝名.
+
+#Supports
+-一般c++ code
+- gecko on fennec, b2g, browser
 
