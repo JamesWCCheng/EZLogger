@@ -78,6 +78,6 @@ main.cpp經過測試會印出
 - 把一些菜市場命名都冠上EZ_ prefix怕衝名.
 
 #Supports
--一般c++ code
+- 一般c++ code
 - gecko on fennec, b2g, browser
 
