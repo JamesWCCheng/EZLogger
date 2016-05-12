@@ -6,10 +6,10 @@ installer
 
 diff --git a/xpcom/glue/ezlogger.h b/xpcom/glue/ezlogger.h
 new file mode 100644
-index 0000000..612f957
+index 0000000..049d472
 --- /dev/null
 +++ b/xpcom/glue/ezlogger.h
-@@ -0,0 +1,477 @@
+@@ -0,0 +1,499 @@
 +#ifndef __EZLOGGER_H__
 +#define __EZLOGGER_H__
 +#include <stdio.h>
@@ -46,6 +46,15 @@ index 0000000..612f957
 +  }
 +
 +  std::string bin2hex(const std::vector<char> &bin) {
++    std::ostringstream oss;
++    for (auto b : bin) {
++      // signed char cast to unsgined int will fill with FFFFFF, so need to cast to unsigned char first.
++      oss << std::setfill('0') << std::setw(2) << std::hex <<static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(&b));
++    }
++    return oss.str();
++  }
++
++  std::string bin2hex(const std::vector<signed char> &bin) {
 +    std::ostringstream oss;
 +    for (auto b : bin) {
 +      // signed char cast to unsgined int will fill with FFFFFF, so need to cast to unsigned char first.
@@ -281,7 +290,20 @@ index 0000000..612f957
 +      vec.push_back(*itr);
 +    }
 +    auto hexString = bin2hex(vec);
-+    printf_stderr("%s = %s, signed nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
++    printf_stderr("%s = %s, char nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
++  }
++
++  template<>
++  void printInternal(const nsTArray<signed char>& aArray, const char* const aObjName)
++  {
++    std::vector<signed char> vec;
++    // deep copy it, since I don't know if nsTArray stores data consecutively or not.
++    for (auto itr = aArray.begin(); itr != aArray.end(); itr++)
++    {
++      vec.push_back(*itr);
++    }
++    auto hexString = bin2hex(vec);
++    printf_stderr("%s = %s, signed char nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
 +  }
 +
 +  // For nsAutoString

@@ -42,6 +42,15 @@ namespace {
     return oss.str();
   }
 
+  std::string bin2hex(const std::vector<signed char> &bin) {
+    std::ostringstream oss;
+    for (auto b : bin) {
+      // signed char cast to unsgined int will fill with FFFFFF, so need to cast to unsigned char first.
+      oss << std::setfill('0') << std::setw(2) << std::hex <<static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(&b));
+    }
+    return oss.str();
+  }
+
   std::string bin2hex(const unsigned char *bin, size_t len) {
     std::ostringstream oss;
     for (size_t i = 0; i < len; i++) {
@@ -269,7 +278,20 @@ namespace {
       vec.push_back(*itr);
     }
     auto hexString = bin2hex(vec);
-    printf_stderr("%s = %s, signed nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
+    printf_stderr("%s = %s, char nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
+  }
+
+  template<>
+  void printInternal(const nsTArray<signed char>& aArray, const char* const aObjName)
+  {
+    std::vector<signed char> vec;
+    // deep copy it, since I don't know if nsTArray stores data consecutively or not.
+    for (auto itr = aArray.begin(); itr != aArray.end(); itr++)
+    {
+      vec.push_back(*itr);
+    }
+    auto hexString = bin2hex(vec);
+    printf_stderr("%s = %s, signed char nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
   }
 
   // For nsAutoString
