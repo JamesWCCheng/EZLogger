@@ -6,7 +6,7 @@ installer
 
 diff --git a/xpcom/glue/ezlogger.h b/xpcom/glue/ezlogger.h
 new file mode 100644
-index 0000000..e453182
+index 0000000..c8ff489
 --- /dev/null
 +++ b/xpcom/glue/ezlogger.h
 @@ -0,0 +1,517 @@
@@ -417,7 +417,7 @@ index 0000000..e453182
 +    printf_stderr("%s = %s", aObjName, aStdStr.c_str());
 +  }
 +  // For pointer
-+  void printInternal(void* aPtr, const char* const aObjName)
++  void printInternal(const void* aPtr, const char* const aObjName)
 +  {
 +    printf_stderr("%s = %p", aObjName, aPtr);
 +  }

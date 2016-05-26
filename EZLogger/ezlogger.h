@@ -405,7 +405,7 @@ namespace {
     printf_stderr("%s = %s", aObjName, aStdStr.c_str());
   }
   // For pointer
-  void printInternal(void* aPtr, const char* const aObjName)
+  void printInternal(const void* aPtr, const char* const aObjName)
   {
     printf_stderr("%s = %p", aObjName, aPtr);
   }
