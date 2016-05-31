@@ -1,7 +1,7 @@
 TARGETS := main
-CXXFLAGS += -g -Wall -std=c++14
+CXXFLAGS += -g -Wall -std=c++11
 
 all: ./EZLogger/$(TARGETS)
 
 clean:
-	@rm -rf $(TARGETS)
+	@rm -rf ./EZLogger/$(TARGETS)

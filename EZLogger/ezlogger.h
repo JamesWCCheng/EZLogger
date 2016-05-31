@@ -18,7 +18,6 @@
 #include <iterator>
 // Helper function to implement byte array to hex string API.
 namespace {
-
   template<class Type, class LengthType>
   auto
   ToVector(const Type* aData, LengthType aLength) -> std::vector<Type>
@@ -356,14 +355,14 @@ namespace {
   void printInternal(const std::vector<uint8_t>& aVec, const char* const aObjName)
   {
     auto hexString = bin2hex(aVec);
-    printf_stderr("%s = %s, unsgined vector length = %u", aObjName, hexString.c_str(), aVec.size());
+    printf_stderr("%s = %s, unsgined vector length = %" PRIu64, aObjName, hexString.c_str(), aVec.size());
   }
 
   template<>
   void printInternal(const std::vector<char>& aVec, const char* const aObjName)
   {
     auto hexString = bin2hex(aVec);
-    printf_stderr("%s = %s, signed vector length = %u", aObjName, hexString.c_str(), aVec.size());
+    printf_stderr("%s = %s, signed vector length = %" PRIu64, aObjName, hexString.c_str(), aVec.size());
   }
 
   template<class Key, class Value>
