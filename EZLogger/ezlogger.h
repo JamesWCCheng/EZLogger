@@ -375,18 +375,7 @@ namespace {
       printf_stderr("%s",ss.str().c_str());
     }
   }
-#if defined(MOZ_WIDGET_ANDROID) || defined(MOZ_WIDGET_GONK)
-  template<class Key, class Value>
-  void printInternal(const std::tr1::unordered_map<Key, Value> aMap, const char* const aObjName)
-  {
-    for (auto& pair : aMap)
-    {
-      std::ostringstream ss;
-      ss << aObjName << "[" << pair.first << ", " << pair.second << "]\n";
-      printf_stderr("%s",ss.str().c_str());
-    }
-  }
-#else
+
   template<class Key, class Value>
   void printInternal(const std::unordered_map<Key, Value> aMap, const char* const aObjName)
   {
@@ -397,7 +386,7 @@ namespace {
       printf_stderr("%s",ss.str().c_str());
     }
   }
-#endif
+
   // For std string
   void printInternal(std::string aStdStr, const char* const aObjName)
   {

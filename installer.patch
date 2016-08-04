@@ -1,12 +1,18 @@
-# HG changeset patch
-# User James Cheng <jacheng@mozilla.com>
+From c7d5e035e7f76edd082fe56718706570058b4325 Mon Sep 17 00:00:00 2001
+From: James Cheng <jacheng@mozilla.com>
+Date: Thu, 4 Aug 2016 14:50:57 +0800
+Subject: [PATCH] installer
 
-installer
-
+MozReview-Commit-ID: DNvAvWuXaoQ
+---
+ xpcom/glue/ezlogger.h | 516 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ xpcom/glue/moz.build  |   1 +
+ 2 files changed, 517 insertions(+)
+ create mode 100644 xpcom/glue/ezlogger.h
 
 diff --git a/xpcom/glue/ezlogger.h b/xpcom/glue/ezlogger.h
 new file mode 100644
-index 0000000..e266a37
+index 0000000..a6b9e8f
 --- /dev/null
 +++ b/xpcom/glue/ezlogger.h
 @@ -0,0 +1,516 @@
@@ -389,7 +395,7 @@ index 0000000..e266a37
 +  }
 +#if defined(MOZ_WIDGET_ANDROID) || defined(MOZ_WIDGET_GONK)
 +  template<class Key, class Value>
-+  void printInternal(const std::tr1::unordered_map<Key, Value> aMap, const char* const aObjName)
++  void printInternal(const std::unordered_map<Key, Value> aMap, const char* const aObjName)
 +  {
 +    for (auto& pair : aMap)
 +    {
@@ -528,15 +534,10 @@ index 0000000..e266a37
 +#endif
 \ No newline at end of file
 diff --git a/xpcom/glue/moz.build b/xpcom/glue/moz.build
-index 47bdf73..6cbd3f7 100644
+index be92935..fd8136a 100644
 --- a/xpcom/glue/moz.build
 +++ b/xpcom/glue/moz.build
-@@ -10,16 +10,17 @@ with Files('nsString*'):
- DIRS += ['standalone']
- 
- # On win we build two glue libs - glue linked to crt dlls here and in staticruntime we build
- # a statically linked glue lib.
- if CONFIG['OS_ARCH'] == 'WINNT':
+@@ -15,6 +15,7 @@ if CONFIG['OS_ARCH'] == 'WINNT':
      DIRS += ['staticruntime']
  
  EXPORTS += [
@@ -544,9 +545,6 @@ index 47bdf73..6cbd3f7 100644
      'MainThreadUtils.h',
      'nsArrayEnumerator.h',
      'nsArrayUtils.h',
-     'nsBaseHashtable.h',
-     'nsCategoryCache.h',
-     'nsClassHashtable.h',
-     'nsCOMArray.h',
-     'nsComponentManagerUtils.h',
+-- 
+2.9.1
 
