@@ -12,8 +12,8 @@
 			},
 			"osx": {
 				"MIMode": "lldb",
-				"preLaunchTask": "clang++"
-
+				"preLaunchTask": "clang++",
+				"externalConsole":true
 			},
 			"program": "${workspaceRoot}/a.out",
 			"request": "launch",
