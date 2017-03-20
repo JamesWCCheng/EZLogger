@@ -1,8 +1,21 @@
 #ifndef __EZLOGGER_H__
 #define __EZLOGGER_H__
-#if defined(__GNUC__)
+#if defined(MS)
 #pragma GCC diagnostic ignored "-Wunused-function"
 #endif
+
+#ifdef _MSC_VER
+#  define PRIoSIZE  "Io"
+#  define PRIuSIZE  "Iu"
+#  define PRIxSIZE  "Ix"
+#  define PRIXSIZE  "IX"
+#else
+#  define PRIoSIZE  "zo"
+#  define PRIuSIZE  "zu"
+#  define PRIxSIZE  "zx"
+#  define PRIXSIZE  "zX"
+#endif
+
 #include <stdio.h>
 #include <utility>
 #include <string>
@@ -355,14 +368,14 @@ namespace {
   void printInternal(const std::vector<uint8_t>& aVec, const char* const aObjName)
   {
     auto hexString = bin2hex(aVec);
-    printf_stderr("%s = %s, unsgined vector length = %" PRIu64, aObjName, hexString.c_str(), aVec.size());
+    printf_stderr("%s = %s, unsgined vector length = %" PRIuSIZE, aObjName, hexString.c_str(), aVec.size());
   }
 
   template<>
   void printInternal(const std::vector<char>& aVec, const char* const aObjName)
   {
     auto hexString = bin2hex(aVec);
-    printf_stderr("%s = %s, signed vector length = %" PRIu64, aObjName, hexString.c_str(), aVec.size());
+    printf_stderr("%s = %s, signed vector length = %" PRIuSIZE, aObjName, hexString.c_str(), aVec.size());
   }
 
   template<class Key, class Value>
