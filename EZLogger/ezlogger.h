@@ -1,6 +1,6 @@
 #ifndef __EZLOGGER_H__
 #define __EZLOGGER_H__
-#if defined(MS)
+#if defined(__GNUC__)
 #pragma GCC diagnostic ignored "-Wunused-function"
 #endif
 
@@ -147,34 +147,34 @@ namespace {
 
 static const char* EZ_TAG = "EZLOG";
 
-#define EXPAND(x) x
-#define EXPAND2(x, y) x, y
+#define _EXPAND(x) x
+#define _EXPAND2(x, y) x, y
 #define CONCATENATE(x, y) x##y
 #define NARG(...) NARG_(__VA_ARGS__, RSEQ_N())
-#define NARG_(...) EXPAND(ARG_N(__VA_ARGS__))
+#define NARG_(...) _EXPAND(ARG_N(__VA_ARGS__))
 #define ARG_N(_1, _2, _3, _4, _5, _6, _7, _8, _9, _10, \
               _11, _12, _13, _14, _15, _16, N, ...) N
 #define RSEQ_N() 16, 15, 14, 13, 12, 11, \
                  10, 9, 8, 7, 6, 5, 4, 3, 2, 1
 
-#define EXTEND(...) EXPAND(EXTEND_(NARG(__VA_ARGS__), __VA_ARGS__))
-#define EXTEND_(N, ...) EXPAND(CONCATENATE(EXTEND_, N)(__VA_ARGS__))
-#define EXTEND_1(x, ...) EXPAND(std::make_pair((x), #x))
-#define EXTEND_2(x, ...) EXPAND2(EXTEND_1(x), EXTEND_1(__VA_ARGS__))
-#define EXTEND_3(x, ...) EXPAND2(EXTEND_1(x), EXTEND_2(__VA_ARGS__))
-#define EXTEND_4(x, ...) EXPAND2(EXTEND_1(x), EXTEND_3(__VA_ARGS__))
-#define EXTEND_5(x, ...) EXPAND2(EXTEND_1(x), EXTEND_4(__VA_ARGS__))
-#define EXTEND_6(x, ...) EXPAND2(EXTEND_1(x), EXTEND_5(__VA_ARGS__))
-#define EXTEND_7(x, ...) EXPAND2(EXTEND_1(x), EXTEND_6(__VA_ARGS__))
-#define EXTEND_8(x, ...) EXPAND2(EXTEND_1(x), EXTEND_7(__VA_ARGS__))
-#define EXTEND_9(x, ...) EXPAND2(EXTEND_1(x), EXTEND_8(__VA_ARGS__))
-#define EXTEND_10(x, ...) EXPAND2(EXTEND_1(x), EXTEND_9(__VA_ARGS__))
-#define EXTEND_11(x, ...) EXPAND2(EXTEND_1(x), EXTEND_10(__VA_ARGS__))
-#define EXTEND_12(x, ...) EXPAND2(EXTEND_1(x), EXTEND_11(__VA_ARGS__))
-#define EXTEND_13(x, ...) EXPAND2(EXTEND_1(x), EXTEND_12(__VA_ARGS__))
-#define EXTEND_14(x, ...) EXPAND2(EXTEND_1(x), EXTEND_13(__VA_ARGS__))
-#define EXTEND_15(x, ...) EXPAND2(EXTEND_1(x), EXTEND_14(__VA_ARGS__))
-#define EXTEND_16(x, ...) EXPAND2(EXTEND_1(x), EXTEND_15(__VA_ARGS__))
+#define EXTEND(...) _EXPAND(EXTEND_(NARG(__VA_ARGS__), __VA_ARGS__))
+#define EXTEND_(N, ...) _EXPAND(CONCATENATE(EXTEND_, N)(__VA_ARGS__))
+#define EXTEND_1(x, ...) _EXPAND(std::make_pair((x), #x))
+#define EXTEND_2(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_1(__VA_ARGS__))
+#define EXTEND_3(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_2(__VA_ARGS__))
+#define EXTEND_4(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_3(__VA_ARGS__))
+#define EXTEND_5(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_4(__VA_ARGS__))
+#define EXTEND_6(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_5(__VA_ARGS__))
+#define EXTEND_7(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_6(__VA_ARGS__))
+#define EXTEND_8(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_7(__VA_ARGS__))
+#define EXTEND_9(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_8(__VA_ARGS__))
+#define EXTEND_10(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_9(__VA_ARGS__))
+#define EXTEND_11(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_10(__VA_ARGS__))
+#define EXTEND_12(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_11(__VA_ARGS__))
+#define EXTEND_13(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_12(__VA_ARGS__))
+#define EXTEND_14(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_13(__VA_ARGS__))
+#define EXTEND_15(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_14(__VA_ARGS__))
+#define EXTEND_16(x, ...) _EXPAND2(EXTEND_1(x), EXTEND_15(__VA_ARGS__))
 
 #if defined(MOZ_XUL) && defined(MOZILLA_INTERNAL_API) // GECKO only
 
@@ -289,7 +289,7 @@ namespace {
       vec.push_back(*itr);
     }
     auto hexString = bin2hex(vec);
-    printf_stderr("%s = %s, unsigned nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
+    printf_stderr("%s = %s, unsigned nsTArray length = %zu", aObjName, hexString.c_str(), vec.size());
   }
 
   template<>
@@ -302,7 +302,7 @@ namespace {
       vec.push_back(*itr);
     }
     auto hexString = bin2hex(vec);
-    printf_stderr("%s = %s, char nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
+    printf_stderr("%s = %s, char nsTArray length = %zu", aObjName, hexString.c_str(), vec.size());
   }
 
   template<>
@@ -315,7 +315,7 @@ namespace {
       vec.push_back(*itr);
     }
     auto hexString = bin2hex(vec);
-    printf_stderr("%s = %s, signed char nsTArray length = %d", aObjName, hexString.c_str(), vec.size());
+    printf_stderr("%s = %s, signed char nsTArray length = %zu", aObjName, hexString.c_str(), vec.size());
   }
 
   // For nsAutoString
@@ -368,14 +368,14 @@ namespace {
   void printInternal(const std::vector<uint8_t>& aVec, const char* const aObjName)
   {
     auto hexString = bin2hex(aVec);
-    printf_stderr("%s = %s, unsgined vector length = %" PRIuSIZE, aObjName, hexString.c_str(), aVec.size());
+    printf_stderr("%s = %s, unsgined vector length = %zu", aObjName, hexString.c_str(), aVec.size());
   }
 
   template<>
   void printInternal(const std::vector<char>& aVec, const char* const aObjName)
   {
     auto hexString = bin2hex(aVec);
-    printf_stderr("%s = %s, signed vector length = %" PRIuSIZE, aObjName, hexString.c_str(), aVec.size());
+    printf_stderr("%s = %s, signed vector length = %zu", aObjName, hexString.c_str(), aVec.size());
   }
 
   template<class Key, class Value>
