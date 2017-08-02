@@ -1,26 +1,39 @@
-From c7d5e035e7f76edd082fe56718706570058b4325 Mon Sep 17 00:00:00 2001
+From ecf6b7b5113cf46afa55020874bbbc39b36a8666 Mon Sep 17 00:00:00 2001
 From: James Cheng <jacheng@mozilla.com>
-Date: Thu, 4 Aug 2016 14:50:57 +0800
-Subject: [PATCH] installer
+Date: Wed, 2 Aug 2017 11:14:39 +0800
+Subject: [PATCH] installer.patch
 
-MozReview-Commit-ID: DNvAvWuXaoQ
+MozReview-Commit-ID: mU9L6Vnq7s
 ---
- xpcom/glue/ezlogger.h | 516 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ xpcom/glue/ezlogger.h | 518 ++++++++++++++++++++++++++++++++++++++++++++++++++
  xpcom/glue/moz.build  |   1 +
- 2 files changed, 517 insertions(+)
+ 2 files changed, 519 insertions(+)
  create mode 100644 xpcom/glue/ezlogger.h
 
 diff --git a/xpcom/glue/ezlogger.h b/xpcom/glue/ezlogger.h
 new file mode 100644
-index 0000000..a6b9e8f
+index 000000000000..15208dccb2a8
 --- /dev/null
 +++ b/xpcom/glue/ezlogger.h
-@@ -0,0 +1,516 @@
+@@ -0,0 +1,518 @@
 +#ifndef __EZLOGGER_H__
 +#define __EZLOGGER_H__
-+#if defined(__GNUC__)
++#if defined(MS)
 +#pragma GCC diagnostic ignored "-Wunused-function"
 +#endif
++
++#ifdef _MSC_VER
++#  define PRIoSIZE  "Io"
++#  define PRIuSIZE  "Iu"
++#  define PRIxSIZE  "Ix"
++#  define PRIXSIZE  "IX"
++#else
++#  define PRIoSIZE  "zo"
++#  define PRIuSIZE  "zu"
++#  define PRIxSIZE  "zx"
++#  define PRIXSIZE  "zX"
++#endif
++
 +#include <stdio.h>
 +#include <utility>
 +#include <string>
@@ -373,14 +386,14 @@ index 0000000..a6b9e8f
 +  void printInternal(const std::vector<uint8_t>& aVec, const char* const aObjName)
 +  {
 +    auto hexString = bin2hex(aVec);
-+    printf_stderr("%s = %s, unsgined vector length = %" PRIu64, aObjName, hexString.c_str(), aVec.size());
++    printf_stderr("%s = %s, unsgined vector length = %" PRIuSIZE, aObjName, hexString.c_str(), aVec.size());
 +  }
 +
 +  template<>
 +  void printInternal(const std::vector<char>& aVec, const char* const aObjName)
 +  {
 +    auto hexString = bin2hex(aVec);
-+    printf_stderr("%s = %s, signed vector length = %" PRIu64, aObjName, hexString.c_str(), aVec.size());
++    printf_stderr("%s = %s, signed vector length = %" PRIuSIZE, aObjName, hexString.c_str(), aVec.size());
 +  }
 +
 +  template<class Key, class Value>
@@ -393,7 +406,7 @@ index 0000000..a6b9e8f
 +      printf_stderr("%s",ss.str().c_str());
 +    }
 +  }
-+#if defined(MOZ_WIDGET_ANDROID) || defined(MOZ_WIDGET_GONK)
++
 +  template<class Key, class Value>
 +  void printInternal(const std::unordered_map<Key, Value> aMap, const char* const aObjName)
 +  {
@@ -404,18 +417,7 @@ index 0000000..a6b9e8f
 +      printf_stderr("%s",ss.str().c_str());
 +    }
 +  }
-+#else
-+  template<class Key, class Value>
-+  void printInternal(const std::unordered_map<Key, Value> aMap, const char* const aObjName)
-+  {
-+    for (auto& pair : aMap)
-+    {
-+      std::ostringstream ss;
-+      ss << aObjName << "[" << pair.first << ", " << pair.second << "]\n";
-+      printf_stderr("%s",ss.str().c_str());
-+    }
-+  }
-+#endif
++
 +  // For std string
 +  void printInternal(std::string aStdStr, const char* const aObjName)
 +  {
@@ -534,17 +536,25 @@ index 0000000..a6b9e8f
 +#endif
 \ No newline at end of file
 diff --git a/xpcom/glue/moz.build b/xpcom/glue/moz.build
-index be92935..fd8136a 100644
+index dd603ec6a25b..02d9b15b557f 100644
 --- a/xpcom/glue/moz.build
 +++ b/xpcom/glue/moz.build
-@@ -15,6 +15,7 @@ if CONFIG['OS_ARCH'] == 'WINNT':
-     DIRS += ['staticruntime']
+@@ -5,14 +5,15 @@
+ # file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ 
+ with Files('nsString*'):
+     BUG_COMPONENT = ('Core', 'String')
+ 
+ DIRS += ['standalone']
  
  EXPORTS += [
 +    'ezlogger.h',
-     'MainThreadUtils.h',
-     'nsArrayEnumerator.h',
-     'nsArrayUtils.h',
+     'nsStringGlue.h',
+ ]
+ 
+ EXPORTS.mozilla += [
+     'FileUtils.h',
+ ]
 -- 
-2.9.1
+2.13.1
 
